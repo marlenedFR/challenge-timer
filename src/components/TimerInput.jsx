@@ -1,7 +1,6 @@
 // TimerInput.jsx
 /* eslint-disable react/prop-types */
 
-import { useEffect } from "react";
 import { useState } from "react";
 
 const TimerInput = ({ onAddTimer }) => {
@@ -32,7 +31,7 @@ const TimerInput = ({ onAddTimer }) => {
   // }, []);
 
   const handleAddTimer = (event) => {
-    event.preventDefault(); // Empêche le double déclenchement sur certains appareils
+    event.preventDefault();
     addTimer();
   };
 
