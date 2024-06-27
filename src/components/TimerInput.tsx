@@ -12,14 +12,55 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     seconds: 0,
   });
 
+  const [inputValues, setInputValues] = useState({
+    hours: "0",
+    minutes: "0",
+    seconds: "0",
+  });
+
+  const [errors, setErrors] = useState({
+    hours: "",
+    minutes: "",
+    seconds: "",
+  });
+
+  const validateValue = (
+    key: keyof Omit<TimerType, "id">,
+    numericValue: number
+  ) => {
+    let errorMessage = "";
+    if (isNaN(numericValue) || numericValue < 0) {
+      errorMessage = "Please enter a valid number.";
+    } else if (key === "hours" && numericValue > 23) {
+      errorMessage = "Hours must be between 0 and 23.";
+    } else if ((key === "minutes" || key === "seconds") && numericValue > 59) {
+      errorMessage = `${
+        key.charAt(0).toUpperCase() + key.slice(1)
+      } must be between 0 and 59.`;
+    }
+    return errorMessage;
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof Omit<TimerType, "id">
   ) => {
-    const value = e.target.value;
-    const numericValue = parseInt(value);
+    let value = e.target.value;
+    const numericValue = parseInt(value, 10);
 
-    if (!isNaN(numericValue) && numericValue >= 0) {
+    const errorMessage = validateValue(key, numericValue);
+
+    setErrors({
+      ...errors,
+      [key]: errorMessage,
+    });
+
+    setInputValues({
+      ...inputValues,
+      [key]: value,
+    });
+
+    if (!errorMessage) {
       setTime({
         ...time,
         [key]: numericValue,
@@ -27,7 +68,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     } else {
       setTime({
         ...time,
-        [key]: 0,
+        [key]: NaN,
       });
     }
   };
@@ -54,6 +95,10 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
         ...time,
         [key]: 0,
       });
+      setInputValues({
+        ...inputValues,
+        [key]: "0",
+      });
     }
   };
 
@@ -61,6 +106,10 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     const { hours, minutes, seconds } = time;
     if (hours === 0 && minutes === 0 && seconds === 0) {
       alert("Please set a time greater than zero.");
+      return;
+    }
+    if (errors.hours || errors.minutes || errors.seconds) {
+      alert("Please enter a valid time.");
       return;
     }
     onAddTimer(time);
