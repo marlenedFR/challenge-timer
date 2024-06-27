@@ -135,7 +135,7 @@ h1 {
 .add-timer-button {
   padding: 10px 20px;
   font-size: var(--font-size-button);
-  background-color: red;
+  background-color: var(--highlight-color);
   border: none;
   border-radius: var(--button-border-radius);
   cursor: pointer;
