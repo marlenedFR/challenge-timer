@@ -9,7 +9,9 @@ const App: React.FC = () => {
   const [timers, setTimers] = useState<TimerType[]>([]);
 
   useEffect(() => {
-    if (Notification.permission !== "granted") {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (!isMobile && Notification.permission !== "granted") {
       Notification.requestPermission();
     }
   }, []);
