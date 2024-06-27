@@ -9,16 +9,13 @@ const App: React.FC = () => {
   const [timers, setTimers] = useState<TimerType[]>([]);
 
   const addTimer = (time: TimerType) => {
-    console.log("Adding timer:", time);
     setTimers((prevTimers) => {
       const newTimers = [...prevTimers, time];
-      console.log("Updated timers:", newTimers);
       return newTimers;
     });
   };
 
   const removeTimer = (index: number) => {
-    console.log("Removing timer at index:", index);
     setTimers((prevTimers) => prevTimers.filter((_, i) => i !== index));
   };
 
