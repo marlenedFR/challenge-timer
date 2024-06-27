@@ -6,12 +6,6 @@ import { useState } from "react";
 const TimerInput = ({ onAddTimer }) => {
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
-  const [debugLogs, setDebugLogs] = useState([]);
-
-  const addDebugLog = (message) => {
-    setDebugLogs((prevLogs) => [...prevLogs, message]);
-  };
-
   const handleTimeChange = (event, unit) => {
     const value = parseInt(event.target.value || 0, 10);
     const cappedValue =
@@ -22,46 +16,16 @@ const TimerInput = ({ onAddTimer }) => {
   const handleFocus = (event) => event.target.select();
 
   const addTimer = () => {
-    addDebugLog();
-    addDebugLog();
     if (time.hours === 0 && time.minutes === 0 && time.seconds === 0) {
-      addDebugLog();
       alert("Please enter a valid time.");
     } else {
-      addDebugLog();
       onAddTimer(time);
       setTime({ hours: 0, minutes: 0, seconds: 0 });
     }
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     onAddTimer({ hours: 0, minutes: 1, seconds: 0 });
-  //   }, 2000);
-  // }, []);
-
-  const handleAddTimer = (event) => {
-    event.preventDefault(); // Empêche le comportement par défaut
-    event.stopPropagation(); // Empêche la propagation de l'événement
-    addDebugLog();
-    addTimer();
-  };
-
   return (
     <div className="timer-input-container">
-      <div
-        style={{
-          marginTop: "20px",
-          border: "1px solid black",
-          padding: "10px",
-        }}
-      >
-        <h2>Debug Logs</h2>
-        {debugLogs.map((log, index) => (
-          <div key={index}>{log}</div>
-        ))}
-      </div>
-
       <div className="timer-inputs-wrapper">
         <div className="timer-input-group">
           <span className="timer-label">Hours</span>
@@ -96,11 +60,7 @@ const TimerInput = ({ onAddTimer }) => {
             className="timer-input"
           />
         </div>
-        <button
-          onClick={handleAddTimer}
-          onTouchStart={handleAddTimer}
-          className="add-timer-button"
-        >
+        <button onClick={addTimer} className="add-timer-button">
           Add Timer
         </button>
       </div>
