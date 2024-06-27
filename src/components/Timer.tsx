@@ -1,11 +1,16 @@
-/* eslint-disable react/prop-types */
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import TimerDisplay from "./TimerDisplay";
 import useTimer from "../hooks/useTimer";
 import useNotification from "../hooks/useNotification";
+import { TimerType } from "../types";
 import "../index.css";
 
-const Timer = ({ initialTime, onRemove }) => {
+interface TimerProps {
+  initialTime: TimerType;
+  onRemove: () => void;
+}
+
+const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   const { timerState, hasEnded, handlePauseResume, handleStop } =
     useTimer(initialTime);
   const { requestNotificationPermission } = useNotification(hasEnded);

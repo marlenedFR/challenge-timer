@@ -1,17 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import TimerInput from "./TimerInput";
 import Timer from "./Timer";
 import Footer from "./Footer";
+import { TimerType } from "../types";
 import "../index.css";
 
-const App = () => {
-  const [timers, setTimers] = useState([]);
+const App: React.FC = () => {
+  const [timers, setTimers] = useState<TimerType[]>([]);
 
-  const addTimer = (time) => {
+  const addTimer = (time: TimerType) => {
     setTimers((prevTimers) => [...prevTimers, time]);
   };
 
-  const removeTimer = (index) => {
+  const removeTimer = (index: number) => {
     setTimers((prevTimers) => prevTimers.filter((_, i) => i !== index));
   };
 

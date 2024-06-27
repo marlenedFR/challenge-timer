@@ -329,3 +329,32 @@ a {
   background-color: var(--border-color);
   height: 40px;
 } */
+
+@media (max-width: 768px) {
+  .timer-display {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .timer-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .timer-time {
+    font-size: 24px;
+  }
+
+  .timer-controls {
+    bottom: -40px; /* Adjust this value as needed */
+  }
+
+  .timer-button {
+    width: 30px;
+    height: 30px;
+  }
+
+  .control-icon {
+    width: 25px;
+  }
+}

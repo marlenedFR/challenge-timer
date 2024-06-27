@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import Time from "../assets/Time.png";
@@ -7,7 +7,17 @@ import Pause from "../assets/Pause.png";
 import Close from "../assets/Close.png";
 import "../index.css";
 
-const TimerDisplay = ({
+interface TimerDisplayProps {
+  time: { hours: number; minutes: number; seconds: number };
+  percentage: number;
+  endTimeString: string;
+  renderBaseTime: () => string;
+  isPaused: boolean;
+  handlePauseResume: () => void;
+  handleStop: () => void;
+}
+
+const TimerDisplay: React.FC<TimerDisplayProps> = ({
   time,
   percentage,
   endTimeString,
@@ -16,7 +26,7 @@ const TimerDisplay = ({
   handlePauseResume,
   handleStop,
 }) => {
-  const formatTime = (value) => String(value).padStart(2, "0");
+  const formatTime = (value: number) => String(value).padStart(2, "0");
 
   return (
     <div className="timer-display">

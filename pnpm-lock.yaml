@@ -37,6 +37,9 @@ devDependencies:
   eslint-plugin-react-refresh:
     specifier: ^0.4.7
     version: 0.4.7(eslint@8.57.0)
+  typescript:
+    specifier: ^5.5.2
+    version: 5.5.2
   vite:
     specifier: ^5.3.1
     version: 5.3.1
@@ -2425,6 +2428,12 @@ packages:
       has-proto: 1.0.3
       is-typed-array: 1.1.13
       possible-typed-array-names: 1.0.0
+    dev: true
+
+  /typescript@5.5.2:
+    resolution: {integrity: sha512-NcRtPEOsPFFWjobJEtfihkLCZCXZt/os3zf8nTxjVH3RvTSxjrCamJpbExGvYOF+tFHc3pA65qpdwPbzjohhew==}
+    engines: {node: '>=14.17'}
+    hasBin: true
     dev: true
 
   /unbox-primitive@1.0.2:
