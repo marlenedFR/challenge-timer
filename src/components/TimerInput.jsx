@@ -32,7 +32,7 @@ const TimerInput = ({ onAddTimer }) => {
   }, []);
 
   const handleAddTimer = (event) => {
-    event.preventDefault(); // Empêche le double déclenchement sur certains appareils
+    event.stopPropagation(); // Empêche le double déclenchement sur certains appareils
     addTimer();
   };
 
