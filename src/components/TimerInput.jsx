@@ -5,13 +5,23 @@ import { useState } from "react";
 import "../index.css";
 
 const TimerInput = ({ onAddTimer }) => {
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
-  const handleAddTimer = () => {
-    if (onAddTimer) {
-      onAddTimer({ hours, minutes, seconds });
+  const handleTimeChange = (event, unit) => {
+    const value = parseInt(event.target.value || 0, 10);
+    const cappedValue =
+      unit === "hours" ? Math.max(0, value) : Math.max(0, Math.min(59, value));
+    setTime((prevTime) => ({ ...prevTime, [unit]: cappedValue }));
+  };
+
+  const handleFocus = (event) => event.target.select();
+
+  const addTimer = () => {
+    if (time.hours === 0 && time.minutes === 0 && time.seconds === 0) {
+      alert("Please enter a valid time.");
+    } else {
+      onAddTimer(time);
+      setTime({ hours: 0, minutes: 0, seconds: 0 });
     }
   };
 
@@ -22,8 +32,9 @@ const TimerInput = ({ onAddTimer }) => {
           <span className="timer-label">Hours</span>
           <input
             type="number"
-            value={hours}
-            onChange={(e) => setHours(parseInt(e.target.value, 10) || 0)}
+            value={time.hours}
+            onChange={(e) => handleTimeChange(e, "hours")}
+            onFocus={handleFocus}
             className="timer-input"
           />
         </div>
@@ -32,8 +43,9 @@ const TimerInput = ({ onAddTimer }) => {
           <span className="timer-label">Minutes</span>
           <input
             type="number"
-            value={minutes}
-            onChange={(e) => setMinutes(parseInt(e.target.value, 10) || 0)}
+            value={time.minutes}
+            onChange={(e) => handleTimeChange(e, "minutes")}
+            onFocus={handleFocus}
             className="timer-input"
           />
         </div>
@@ -43,12 +55,13 @@ const TimerInput = ({ onAddTimer }) => {
           <span className="timer-label">Seconds</span>
           <input
             type="number"
-            value={seconds}
-            onChange={(e) => setSeconds(parseInt(e.target.value, 10) || 0)}
+            value={time.seconds}
+            onChange={(e) => handleTimeChange(e, "seconds")}
+            onFocus={handleFocus}
             className="timer-input"
           />
         </div>
-        <button onClick={handleAddTimer} className="add-timer-button">
+        <button onClick={addTimer} className="add-timer-button">
           Add Timer
         </button>
       </div>
