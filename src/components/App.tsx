@@ -14,15 +14,13 @@ const App: React.FC = () => {
 
   const [timers, setTimers] = useState<TimerType[]>([]);
 
-  const addTimer = (time: TimerType) => {
-    setTimers((prevTimers) => {
-      const newTimers = [...prevTimers, time];
-      return newTimers;
-    });
+  const addTimer = (time: Omit<TimerType, "id">) => {
+    const newTimer = { ...time, id: Date.now() };
+    setTimers((prevTimers) => [...prevTimers, newTimer]);
   };
 
-  const removeTimer = (index: number) => {
-    setTimers((prevTimers) => prevTimers.filter((_, i) => i !== index));
+  const removeTimer = (id: number) => {
+    setTimers((prevTimers) => prevTimers.filter((timer) => timer.id !== id));
   };
 
   return (
@@ -30,11 +28,11 @@ const App: React.FC = () => {
       <h1>Timer</h1>
       <TimerInput onAddTimer={addTimer} />
       <div className="timer-list">
-        {timers.map((time, index) => (
+        {timers.map((timer) => (
           <Timer
-            key={index}
-            initialTime={time}
-            onRemove={() => removeTimer(index)}
+            key={timer.id}
+            initialTime={timer}
+            onRemove={() => removeTimer(timer.id)}
           />
         ))}
       </div>
