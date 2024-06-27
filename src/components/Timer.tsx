@@ -13,7 +13,7 @@ interface TimerProps {
 
 const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   const { timerState, handlePauseResume, handleStop } = useTimer(initialTime);
-  const playSound = useSound("/src/assets/Clock.mp3");
+  const playSound = useSound();
 
   const totalSeconds =
     initialTime.hours * 3600 + initialTime.minutes * 60 + initialTime.seconds;

@@ -1,17 +1,22 @@
 import { useEffect, useRef } from "react";
+import clockSound from "../assets/Clock.mp3";
 
-const useSound = (url: string) => {
+const useSound = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (url) {
-      audioRef.current = new Audio(url);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (!isMobile) {
+      audioRef.current = new Audio(clockSound);
     }
-  }, [url]);
+  }, []);
 
   const play = () => {
     if (audioRef.current) {
-      audioRef.current.play();
+      audioRef.current
+        .play()
+        .catch((error) => console.error("Error playing sound:", error));
     }
   };
 
