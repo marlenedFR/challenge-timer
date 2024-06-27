@@ -41,6 +41,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
   };
 
   const handleAddTimer = () => {
+    console.log("Adding timer from input:", time);
     onAddTimer(time);
   };
 
