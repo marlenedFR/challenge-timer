@@ -18,7 +18,7 @@ const useTimer = (initialTime: TimerType) => {
   useEffect(() => {
     if (timerState.isActive && !timerState.isPaused) {
       timerRef.current = setInterval(() => {
-        setTimerState((prevState) => {
+        setTimerState((prevState): TimerState => {
           const totalSeconds =
             prevState.time.hours * 3600 +
             prevState.time.minutes * 60 +
@@ -29,7 +29,7 @@ const useTimer = (initialTime: TimerType) => {
             if (timerRef.current) clearInterval(timerRef.current);
             return {
               ...prevState,
-              time: { hours: 0, minutes: 0, seconds: 0 },
+              time: { ...prevState.time, hours: 0, minutes: 0, seconds: 0 },
               isActive: false,
             };
           }
@@ -40,7 +40,7 @@ const useTimer = (initialTime: TimerType) => {
 
           return {
             ...prevState,
-            time: { hours, minutes, seconds },
+            time: { ...prevState.time, hours, minutes, seconds },
           };
         });
       }, 1000);

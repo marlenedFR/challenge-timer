@@ -6,29 +6,26 @@ interface TimerInputProps {
 }
 
 const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
-  const [time, setTime] = useState<Omit<TimerType, "id">>({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
+  const [state, setState] = useState({
+    values: {
+      hours: "0",
+      minutes: "0",
+      seconds: "0",
+    },
+    errors: {
+      hours: "",
+      minutes: "",
+      seconds: "",
+    },
   });
 
-  const [inputValues, setInputValues] = useState({
-    hours: "0",
-    minutes: "0",
-    seconds: "0",
-  });
-
-  const [errors, setErrors] = useState({
-    hours: "",
-    minutes: "",
-    seconds: "",
-  });
-
-  const validateValue = (
+  const validateAndSetState = (
     key: keyof Omit<TimerType, "id">,
-    numericValue: number
+    value: string
   ) => {
+    const numericValue = parseInt(value.slice(0, 2), 10);
     let errorMessage = "";
+
     if (isNaN(numericValue) || numericValue < 0) {
       errorMessage = "Please enter a valid number.";
     } else if (key === "hours" && numericValue > 23) {
@@ -38,81 +35,82 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
         key.charAt(0).toUpperCase() + key.slice(1)
       } must be between 0 and 59.`;
     }
-    return errorMessage;
+
+    setState((prevState) => ({
+      values: {
+        ...prevState.values,
+        [key]: value.slice(0, 2),
+      },
+      errors: {
+        ...prevState.errors,
+        [key]: errorMessage,
+      },
+    }));
+
+    return errorMessage === "" ? numericValue : NaN;
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof Omit<TimerType, "id">
   ) => {
-    let value = e.target.value;
-    const numericValue = parseInt(value, 10);
+    validateAndSetState(key, e.target.value);
+  };
 
-    const errorMessage = validateValue(key, numericValue);
+  const handleFocus = (key: keyof Omit<TimerType, "id">) => {
+    if (state.values[key] === "0") {
+      setState((prevState) => ({
+        ...prevState,
+        values: {
+          ...prevState.values,
+          [key]: "",
+        },
+      }));
+    }
+  };
 
-    setErrors({
-      ...errors,
-      [key]: errorMessage,
-    });
-
-    setInputValues({
-      ...inputValues,
-      [key]: value,
-    });
-
-    if (!errorMessage) {
-      setTime({
-        ...time,
-        [key]: numericValue,
-      });
+  const handleBlur = (key: keyof Omit<TimerType, "id">) => {
+    if (state.values[key] === "") {
+      setState((prevState) => ({
+        ...prevState,
+        values: {
+          ...prevState.values,
+          [key]: "0",
+        },
+        errors: {
+          ...prevState.errors,
+          [key]: "",
+        },
+      }));
     } else {
-      setTime({
-        ...time,
-        [key]: NaN,
-      });
-    }
-  };
-
-  const handleFocus = (
-    e: React.FocusEvent<HTMLInputElement>,
-    key: keyof Omit<TimerType, "id">
-  ) => {
-    if (time[key] === 0) {
-      setTime({
-        ...time,
-        [key]: NaN,
-      });
-      e.target.value = "";
-    }
-  };
-
-  const handleBlur = (
-    e: React.FocusEvent<HTMLInputElement>,
-    key: keyof Omit<TimerType, "id">
-  ) => {
-    if (isNaN(time[key])) {
-      setTime({
-        ...time,
-        [key]: 0,
-      });
-      setInputValues({
-        ...inputValues,
-        [key]: "0",
-      });
+      validateAndSetState(key, state.values[key]);
     }
   };
 
   const handleAddTimer = () => {
-    const { hours, minutes, seconds } = time;
+    const hours = validateAndSetState("hours", state.values.hours);
+    const minutes = validateAndSetState("minutes", state.values.minutes);
+    const seconds = validateAndSetState("seconds", state.values.seconds);
+
     if (hours === 0 && minutes === 0 && seconds === 0) {
       alert("Please set a time greater than zero.");
       return;
     }
-    if (errors.hours || errors.minutes || errors.seconds) {
-      alert("Please enter a valid time.");
+
+    const errorMessages = Object.entries(state.errors)
+      .filter(([key, value]) => value)
+      .map(
+        ([key, value]) =>
+          `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`
+      )
+      .join("\n");
+
+    if (errorMessages) {
+      alert(`Please fix the following errors:\n${errorMessages}`);
       return;
     }
-    onAddTimer(time);
+
+    onAddTimer({ hours, minutes, seconds });
   };
 
   const renderInput = (label: string, key: keyof Omit<TimerType, "id">) => (
@@ -121,10 +119,10 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
       <input
         type="number"
         className="timer-input"
-        value={isNaN(time[key]) ? "" : time[key]}
+        value={state.values[key]}
         onChange={(e) => handleChange(e, key)}
-        onFocus={(e) => handleFocus(e, key)}
-        onBlur={(e) => handleBlur(e, key)}
+        onFocus={() => handleFocus(key)}
+        onBlur={() => handleBlur(key)}
         min="0"
         step="1"
         onKeyDown={(e) => e.key === "-" && e.preventDefault()}
