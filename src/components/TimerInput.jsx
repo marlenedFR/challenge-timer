@@ -25,11 +25,11 @@ const TimerInput = ({ onAddTimer }) => {
     }
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      onAddTimer({ hours: 0, minutes: 1, seconds: 0 });
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     onAddTimer({ hours: 0, minutes: 1, seconds: 0 });
+  //   }, 2000);
+  // }, []);
 
   const handleAddTimer = (event) => {
     event.preventDefault(); // Empêche le double déclenchement sur certains appareils
