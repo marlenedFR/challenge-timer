@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TimerInput from "./TimerInput";
 import Timer from "./Timer";
 import Footer from "./Footer";
@@ -6,6 +6,12 @@ import { TimerType } from "../types";
 import "../index.css";
 
 const App: React.FC = () => {
+  useEffect(() => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+  }, []);
+
   const [timers, setTimers] = useState<TimerType[]>([]);
 
   const addTimer = (time: TimerType) => {

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import TimerDisplay from "./TimerDisplay";
 import useTimer from "../hooks/useTimer";
+import useNotification from "../hooks/useNotification";
+import useSound from "../hooks/useSound";
 import { TimerType } from "../types";
 import "../index.css";
 
@@ -11,6 +13,7 @@ interface TimerProps {
 
 const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   const { timerState, handlePauseResume, handleStop } = useTimer(initialTime);
+  const playSound = useSound("/src/assets/Clock.mp3");
 
   const totalSeconds =
     initialTime.hours * 3600 + initialTime.minutes * 60 + initialTime.seconds;
@@ -39,6 +42,14 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
     timerState.time.seconds;
 
   const percentage = ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
+
+  useNotification(remainingSeconds === 0 ? "Timer terminé ! 😎" : "");
+
+  useEffect(() => {
+    if (remainingSeconds === 0) {
+      playSound();
+    }
+  }, [remainingSeconds, playSound]);
 
   return (
     <div className="timer-display">
