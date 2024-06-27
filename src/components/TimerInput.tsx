@@ -16,47 +16,65 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof TimerType
   ) => {
+    const value = parseInt(e.target.value);
     setTime({
       ...time,
-      [key]: parseInt(e.target.value) || 0,
+      [key]: value >= 0 ? value : 0, // Assurez-vous que la valeur soit positive
     });
   };
 
+  const handleFocus = (
+    e: React.FocusEvent<HTMLInputElement>,
+    key: keyof TimerType
+  ) => {
+    if (time[key] === 0) {
+      setTime({
+        ...time,
+        [key]: NaN, // Utilisez NaN pour indiquer que le champ est vide
+      });
+      e.target.value = ""; // Effacez le champ d'entrée
+    }
+  };
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement>,
+    key: keyof TimerType
+  ) => {
+    if (isNaN(time[key])) {
+      setTime({
+        ...time,
+        [key]: 0, // Remettez 0 si le champ est vide
+      });
+    }
+  };
+
   const handleAddTimer = () => {
-    console.log("Adding timer from input:", time);
     onAddTimer(time);
   };
+
+  const renderInput = (label: string, key: keyof TimerType) => (
+    <div className="timer-input-group">
+      <label className="timer-label">{label}</label>
+      <input
+        type="number"
+        className="timer-input"
+        value={isNaN(time[key]) ? "" : time[key]}
+        onChange={(e) => handleChange(e, key)}
+        onFocus={(e) => handleFocus(e, key)}
+        onBlur={(e) => handleBlur(e, key)}
+        min="0" // Empêche les valeurs négatives
+        step="1" // Optionnel : définit l'incrément de la valeur
+        onKeyDown={(e) => e.key === "-" && e.preventDefault()} // Empêche la saisie du signe négatif
+      />
+    </div>
+  );
 
   return (
     <div className="timer-input-container">
       <div className="timer-inputs-wrapper">
-        <div className="timer-input-group">
-          <label className="timer-label">Hours</label>
-          <input
-            type="number"
-            className="timer-input"
-            value={time.hours}
-            onChange={(e) => handleChange(e, "hours")}
-          />
-        </div>
-        <div className="timer-input-group">
-          <label className="timer-label">Minutes</label>
-          <input
-            type="number"
-            className="timer-input"
-            value={time.minutes}
-            onChange={(e) => handleChange(e, "minutes")}
-          />
-        </div>
-        <div className="timer-input-group">
-          <label className="timer-label">Seconds</label>
-          <input
-            type="number"
-            className="timer-input"
-            value={time.seconds}
-            onChange={(e) => handleChange(e, "seconds")}
-          />
-        </div>
+        {renderInput("Hours", "hours")}
+        {renderInput("Minutes", "minutes")}
+        {renderInput("Seconds", "seconds")}
       </div>
       <button className="add-timer-button" onClick={handleAddTimer}>
         Add Timer

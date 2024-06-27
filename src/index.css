@@ -66,6 +66,11 @@ body::before {
   backdrop-filter: blur(5px);
 }
 
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -130,6 +135,16 @@ h1 {
   font-family: var(--main-font-family);
   padding: 10px;
   background-color: #fff;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .add-timer-button {
