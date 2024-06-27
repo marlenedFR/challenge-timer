@@ -6,11 +6,11 @@ import { TimerType } from "../types";
 import "../index.css";
 
 const App: React.FC = () => {
-  useEffect(() => {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (Notification.permission !== "granted") {
+  //     Notification.requestPermission();
+  //   }
+  // }, []);
 
   const [timers, setTimers] = useState<TimerType[]>([]);
 
