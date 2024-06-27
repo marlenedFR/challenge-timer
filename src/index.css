@@ -81,20 +81,6 @@ a {
   overflow: auto;
   margin-bottom: 100px;
   z-index: 3;
-  padding: 20px;
-}
-
-/* Ajout de media queries pour améliorer la compatibilité mobile */
-@media (max-width: 768px) {
-  .timer-input-container {
-    width: 90%;
-    height: auto;
-  }
-
-  .timer-display {
-    width: 90%;
-    height: auto;
-  }
 }
 
 h1 {
@@ -185,6 +171,25 @@ h1 {
   position: absolute;
   bottom: 40px;
   right: 38px;
+}
+
+@media (max-width: 768px) {
+  .add-timer-button {
+    font-size: 16px;
+    padding: 8px 16px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .timer-input-container {
+    width: 90%;
+    height: auto;
+  }
+
+  .timer-display {
+    width: 90%;
+    height: auto;
+  }
 }
 
 .add-timer-button:hover {
