@@ -1,10 +1,20 @@
-/* eslint-disable react/prop-types */
+import React from "react";
 import Play from "../assets/Play.png";
 import Pause from "../assets/Pause.png";
 import Close from "../assets/Close.png";
 import "../index.css";
 
-const TimerControls = ({ isPaused, handlePauseResume, handleStop }) => {
+interface TimerControlsProps {
+  isPaused: boolean;
+  handlePauseResume: () => void;
+  handleStop: () => void;
+}
+
+const TimerControls: React.FC<TimerControlsProps> = ({
+  isPaused,
+  handlePauseResume,
+  handleStop,
+}) => {
   return (
     <div className="timer-controls">
       <button onClick={handlePauseResume} className="timer-button">
