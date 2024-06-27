@@ -146,6 +146,7 @@ h1 {
   position: absolute;
   bottom: 40px;
   right: 38px;
+  color: var(--primary-color);
 }
 
 .add-timer-button:hover {
