@@ -1,24 +1,41 @@
 import React, { useState } from "react";
+import TimerInput from "./TimerInput";
 import Timer from "./Timer";
+import Footer from "./Footer";
 import { TimerType } from "../types";
 import "../index.css";
 
 const App: React.FC = () => {
-  const [showTimer, setShowTimer] = useState<boolean>(false);
+  const [timers, setTimers] = useState<TimerType[]>([]);
 
-  const testTime: TimerType = { hours: 0, minutes: 5, seconds: 0 };
+  const addTimer = (time: TimerType) => {
+    console.log("Adding timer:", time);
+    setTimers((prevTimers) => {
+      const newTimers = [...prevTimers, time];
+      console.log("Updated timers:", newTimers);
+      return newTimers;
+    });
+  };
+
+  const removeTimer = (index: number) => {
+    console.log("Removing timer at index:", index);
+    setTimers((prevTimers) => prevTimers.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="app">
       <h1>Timer</h1>
-      <button className="add-timer-button" onClick={() => setShowTimer(true)}>
-        Add Timer
-      </button>
+      <TimerInput onAddTimer={addTimer} />
       <div className="timer-list">
-        {showTimer && (
-          <Timer initialTime={testTime} onRemove={() => setShowTimer(false)} />
-        )}
+        {timers.map((time, index) => (
+          <Timer
+            key={index}
+            initialTime={time}
+            onRemove={() => removeTimer(index)}
+          />
+        ))}
       </div>
+      <Footer />
     </div>
   );
 };
