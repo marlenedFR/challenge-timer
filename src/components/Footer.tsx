@@ -23,15 +23,6 @@ const Footer = () => {
             </a>
           </p>
         </div>
-        {/* <div className="separator"></div>
-        <div className="footer-right">
-          <p>
-            <a href="">Repo GitHub</a>
-          </p>
-          <p>
-            <a href="">Lien du challenge</a> (abonnés uniquement)
-          </p>
-        </div> */}
       </div>
     </footer>
   );

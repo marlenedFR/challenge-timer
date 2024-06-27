@@ -6,12 +6,42 @@ interface TimerInputProps {
 }
 
 const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
-  const [hours, setHours] = useState<number>(0);
-  const [minutes, setMinutes] = useState<number>(0);
-  const [seconds, setSeconds] = useState<number>(0);
+  const [time, setTime] = useState<TimerType>({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: keyof TimerType
+  ) => {
+    setTime({
+      ...time,
+      [key]: parseInt(e.target.value) || 0,
+    });
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value === "0") {
+      e.target.value = "";
+    }
+  };
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement>,
+    key: keyof TimerType
+  ) => {
+    if (e.target.value === "") {
+      setTime({
+        ...time,
+        [key]: 0,
+      });
+    }
+  };
 
   const handleAddTimer = () => {
-    onAddTimer({ hours, minutes, seconds });
+    onAddTimer(time);
   };
 
   return (
@@ -22,8 +52,10 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
           <input
             type="number"
             className="timer-input"
-            value={hours}
-            onChange={(e) => setHours(parseInt(e.target.value) || 0)}
+            value={time.hours}
+            onChange={(e) => handleChange(e, "hours")}
+            onFocus={handleFocus}
+            onBlur={(e) => handleBlur(e, "hours")}
           />
         </div>
         <div className="timer-input-group">
@@ -31,8 +63,10 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
           <input
             type="number"
             className="timer-input"
-            value={minutes}
-            onChange={(e) => setMinutes(parseInt(e.target.value) || 0)}
+            value={time.minutes}
+            onChange={(e) => handleChange(e, "minutes")}
+            onFocus={handleFocus}
+            onBlur={(e) => handleBlur(e, "minutes")}
           />
         </div>
         <div className="timer-input-group">
@@ -40,8 +74,10 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
           <input
             type="number"
             className="timer-input"
-            value={seconds}
-            onChange={(e) => setSeconds(parseInt(e.target.value) || 0)}
+            value={time.seconds}
+            onChange={(e) => handleChange(e, "seconds")}
+            onFocus={handleFocus}
+            onBlur={(e) => handleBlur(e, "seconds")}
           />
         </div>
       </div>
