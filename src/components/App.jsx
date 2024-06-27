@@ -27,6 +27,11 @@ const App = () => {
             onRemove={() => removeTimer(index)}
           />
         ))}
+        {/* Timer de test statique */}
+        <Timer
+          initialTime={{ hours: 0, minutes: 1, seconds: 0 }}
+          onRemove={() => {}}
+        />
       </div>
       <Footer />
     </div>
