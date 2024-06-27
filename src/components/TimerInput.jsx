@@ -1,69 +1,59 @@
-// TimerInput.jsx
-/* eslint-disable react/prop-types */
-
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../index.css";
 
 const TimerInput = ({ onAddTimer }) => {
-  const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [log, setLog] = useState("");
 
-  const handleTimeChange = (event, unit) => {
-    const value = parseInt(event.target.value || 0, 10);
-    const cappedValue =
-      unit === "hours" ? Math.max(0, value) : Math.max(0, Math.min(59, value));
-    setTime((prevTime) => ({ ...prevTime, [unit]: cappedValue }));
-  };
-
-  const handleFocus = (event) => event.target.select();
-
-  const addTimer = () => {
-    if (time.hours === 0 && time.minutes === 0 && time.seconds === 0) {
-      alert("Please enter a valid time.");
-    } else {
-      onAddTimer(time);
-      setTime({ hours: 0, minutes: 0, seconds: 0 });
+  const handleAddTimer = () => {
+    if (onAddTimer) {
+      onAddTimer({ hours, minutes, seconds });
+      setLog(`Button clicked: ${hours}h ${minutes}m ${seconds}s`);
     }
   };
+
+  useEffect(() => {
+    setLog("TimerInput component mounted");
+  }, []);
 
   return (
     <div className="timer-input-container">
       <div className="timer-inputs-wrapper">
         <div className="timer-input-group">
-          <span className="timer-label">Hours</span>
+          <label className="timer-label">Hours</label>
           <input
             type="number"
-            value={time.hours}
-            onChange={(e) => handleTimeChange(e, "hours")}
-            onFocus={handleFocus}
             className="timer-input"
+            value={hours}
+            onChange={(e) => setHours(parseInt(e.target.value, 10) || 0)}
           />
         </div>
-        <span className="timer-column">:</span>
         <div className="timer-input-group">
-          <span className="timer-label">Minutes</span>
+          <label className="timer-label">Minutes</label>
           <input
             type="number"
-            value={time.minutes}
-            onChange={(e) => handleTimeChange(e, "minutes")}
-            onFocus={handleFocus}
             className="timer-input"
+            value={minutes}
+            onChange={(e) => setMinutes(parseInt(e.target.value, 10) || 0)}
           />
         </div>
-
-        <span className="timer-column">:</span>
         <div className="timer-input-group">
-          <span className="timer-label">Seconds</span>
+          <label className="timer-label">Seconds</label>
           <input
             type="number"
-            value={time.seconds}
-            onChange={(e) => handleTimeChange(e, "seconds")}
-            onFocus={handleFocus}
             className="timer-input"
+            value={seconds}
+            onChange={(e) => setSeconds(parseInt(e.target.value, 10) || 0)}
           />
         </div>
-        <button onClick={addTimer} className="add-timer-button">
-          Add Timer
-        </button>
+      </div>
+      <button className="add-timer-button" onClick={handleAddTimer}>
+        Add Timer
+      </button>
+      <div className="log">
+        <p>{log}</p>
       </div>
     </div>
   );
