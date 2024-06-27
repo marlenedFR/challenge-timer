@@ -24,6 +24,11 @@ const TimerInput = ({ onAddTimer }) => {
     }
   };
 
+  const handleAddTimer = (event) => {
+    event.preventDefault(); // Empêche le double déclenchement sur certains appareils
+    addTimer();
+  };
+
   return (
     <div className="timer-input-container">
       <div className="timer-inputs-wrapper">
@@ -60,7 +65,11 @@ const TimerInput = ({ onAddTimer }) => {
             className="timer-input"
           />
         </div>
-        <button onClick={addTimer} className="add-timer-button">
+        <button
+          onClick={addTimer}
+          onTouchStart={handleAddTimer}
+          className="add-timer-button"
+        >
           Add Timer
         </button>
       </div>
