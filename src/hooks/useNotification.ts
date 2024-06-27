@@ -5,7 +5,9 @@ const useNotification = (
   options?: NotificationOptions
 ): void => {
   useEffect(() => {
-    if (message) {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (!isMobile && message) {
       const notification = new Notification(message, options);
       return () => notification.close();
     }

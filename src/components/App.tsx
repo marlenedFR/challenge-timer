@@ -7,10 +7,9 @@ import "../index.css";
 
 const App: React.FC = () => {
   const [timers, setTimers] = useState<TimerType[]>([]);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
     if (!isMobile && Notification.permission !== "granted") {
       Notification.requestPermission();
     }

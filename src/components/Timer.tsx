@@ -13,6 +13,7 @@ interface TimerProps {
 
 const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   const { timerState, handlePauseResume, handleStop } = useTimer(initialTime);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const playSound = useSound();
 
   const totalSeconds =
@@ -46,10 +47,10 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   useNotification(remainingSeconds === 0 ? "Timer terminé ! 😎" : "");
 
   useEffect(() => {
-    if (remainingSeconds === 0) {
+    if (!isMobile && remainingSeconds === 0) {
       playSound();
     }
-  }, [remainingSeconds, playSound]);
+  }, [remainingSeconds, playSound, isMobile]);
 
   return (
     <div className="timer-display">
