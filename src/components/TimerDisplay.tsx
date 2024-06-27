@@ -27,7 +27,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({
   const formatTime = (value: number) => String(value).padStart(2, "0");
 
   return (
-    <div className="timer-display">
+    <div className="timer-display-container">
       <div className="timer-circle">
         <CircularProgressbar
           value={percentage}
