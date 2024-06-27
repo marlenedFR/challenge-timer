@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import TimerDisplay from "./TimerDisplay";
 import useTimer from "../hooks/useTimer";
-import useNotification from "../hooks/useNotification";
+import {
+  useNotification,
+  requestNotificationPermission,
+} from "../hooks/useNotification";
 import useSound from "../hooks/useSound";
 import { TimerType } from "../types";
 import "../index.css";
@@ -14,6 +17,23 @@ interface TimerProps {
 const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   const { timerState, handlePauseResume, handleStop } = useTimer(initialTime);
   const playSound = useSound("/src/assets/Clock.mp3");
+
+  useEffect(() => {
+    requestNotificationPermission(); // Demande d'autorisation à l'initialisation du timer
+  }, []);
+
+  useEffect(() => {
+    if (
+      timerState.time.hours === 0 &&
+      timerState.time.minutes === 0 &&
+      timerState.time.seconds === 0
+    ) {
+      useNotification("Timer Finished", {
+        body: "Your timer has finished!",
+      });
+      handleStop(onRemove);
+    }
+  }, [timerState, handleStop, onRemove]);
 
   const totalSeconds =
     initialTime.hours * 3600 + initialTime.minutes * 60 + initialTime.seconds;
@@ -42,8 +62,6 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
     timerState.time.seconds;
 
   const percentage = ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
-
-  useNotification(remainingSeconds === 0 ? "Timer terminé ! 😎" : "");
 
   useEffect(() => {
     if (remainingSeconds === 0) {
