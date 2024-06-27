@@ -1,15 +1,11 @@
 import { useEffect, useRef } from "react";
-import clockSound from "../assets/Clock.mp3";
+import clockSound from "../assets/Clock.mp3"; // Vérifiez bien que le chemin est correct
 
 const useSound = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (!isMobile) {
-      audioRef.current = new Audio(clockSound);
-    }
+    audioRef.current = new Audio(clockSound);
   }, []);
 
   const play = () => {
