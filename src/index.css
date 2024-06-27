@@ -37,6 +37,35 @@ body {
   position: relative;
 }
 
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.2)
+    ),
+    linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.2) 75%,
+      rgba(255, 255, 255, 0.2)
+    );
+  background-size: 10px 10px;
+  opacity: 0.1;
+  z-index: 1;
+  backdrop-filter: blur(5px);
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -71,6 +100,38 @@ h1 {
   z-index: 4;
 }
 
+.timer-inputs-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.timer-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.timer-label {
+  font-size: var(--font-size-label);
+  margin: 10px;
+  font-family: var(--main-font-family);
+}
+
+.timer-input {
+  width: 50px;
+  text-align: center;
+  font-size: var(--font-size-input);
+  background-color: transparent;
+  border-radius: var(--button-border-radius);
+  border: var(--border-width) solid var(--border-color);
+  font-family: var(--main-font-family);
+  padding: 10px;
+  background-color: #fff;
+}
+
 .add-timer-button {
   padding: 10px 20px;
   font-size: var(--font-size-button);
@@ -82,7 +143,9 @@ h1 {
   font-family: var(--main-font-family);
   border: var(--border-width) solid var(--border-color);
   font-weight: 600;
-  position: static;
+  position: absolute;
+  bottom: 40px;
+  right: 38px;
 }
 
 .add-timer-button:hover {
@@ -191,21 +254,43 @@ h1 {
   width: 35px;
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-  .timer-input-container,
-  .timer-display {
-    width: 90%;
-    height: auto;
-  }
+.footer {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px 0;
+  text-align: center;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  font-family: var(--main-font-family);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 12px;
+  line-height: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .add-timer-button {
-    position: static;
-    margin: 20px auto;
-  }
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-  .timer-list {
-    flex-direction: column;
-    gap: 10px;
-  }
+.footer-left,
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.footer p {
+  margin: 5px 0;
 }
