@@ -319,3 +319,22 @@ h1 {
 .footer p {
   margin: 5px 0;
 }
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .timer-input-container,
+  .timer-display {
+    width: 90%;
+    height: auto;
+  }
+
+  .add-timer-button {
+    position: static;
+    margin: 20px auto;
+  }
+
+  .timer-list {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
