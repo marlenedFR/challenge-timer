@@ -14,7 +14,7 @@ const Timer = ({ initialTime, onRemove }) => {
     isActive: true,
     isPaused: false,
   });
-
+  const [log, setLog] = useState("");
   const [hasEnded, setHasEnded] = useState(false);
 
   const totalSeconds =
@@ -26,6 +26,7 @@ const Timer = ({ initialTime, onRemove }) => {
   });
 
   useEffect(() => {
+    setLog("Timer component mounted");
     requestNotificationPermission();
     let timerId;
     if (timerState.isActive && !timerState.isPaused) {
@@ -36,7 +37,7 @@ const Timer = ({ initialTime, onRemove }) => {
             prevState.time.minutes * 60 +
             prevState.time.seconds -
             1;
-          console.log(`Remaining time: ${totalSeconds} seconds`); // Debugging log
+          setLog(`Remaining time: ${totalSeconds} seconds`); // Update log
           if (totalSeconds <= 0) {
             clearInterval(timerId);
             if (!hasEnded) {
@@ -97,7 +98,7 @@ const Timer = ({ initialTime, onRemove }) => {
       ...prevState,
       isPaused: !prevState.isPaused,
     }));
-    console.log(`Timer ${timerState.isPaused ? "resumed" : "paused"}`); // Debugging log
+    setLog(`Timer ${timerState.isPaused ? "resumed" : "paused"}`); // Update log
   };
 
   const handleStop = () => {
@@ -164,6 +165,7 @@ const Timer = ({ initialTime, onRemove }) => {
         </button>
       </div>
       <div className="log">
+        <p>Log: {log}</p>
         <p>Timer active: {String(timerState.isActive)}</p>
         <p>Timer paused: {String(timerState.isPaused)}</p>
         <p>
