@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import TimerDisplay from "./TimerDisplay";
 import useTimer from "../hooks/useTimer";
-import useNotification from "../hooks/useNotification";
 import { TimerType } from "../types";
 import "../index.css";
 
@@ -11,9 +10,7 @@ interface TimerProps {
 }
 
 const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
-  const { timerState, hasEnded, handlePauseResume, handleStop } =
-    useTimer(initialTime);
-  const { requestNotificationPermission } = useNotification(hasEnded);
+  const { timerState, handlePauseResume, handleStop } = useTimer(initialTime);
 
   const totalSeconds =
     initialTime.hours * 3600 + initialTime.minutes * 60 + initialTime.seconds;
@@ -22,10 +19,6 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
     hour: "2-digit",
     minute: "2-digit",
   });
-
-  useEffect(() => {
-    requestNotificationPermission();
-  }, [requestNotificationPermission]);
 
   const renderBaseTime = () => {
     if (initialTime.hours > 0) {
@@ -48,15 +41,17 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   const percentage = ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
 
   return (
-    <TimerDisplay
-      time={timerState.time}
-      percentage={percentage}
-      endTimeString={endTimeString}
-      renderBaseTime={renderBaseTime}
-      isPaused={timerState.isPaused}
-      handlePauseResume={handlePauseResume}
-      handleStop={() => handleStop(onRemove)}
-    />
+    <div className="timer-display">
+      <TimerDisplay
+        time={timerState.time}
+        percentage={percentage}
+        endTimeString={endTimeString}
+        renderBaseTime={renderBaseTime}
+        isPaused={timerState.isPaused}
+        handlePauseResume={handlePauseResume}
+        handleStop={() => handleStop(onRemove)}
+      />
+    </div>
   );
 };
 
