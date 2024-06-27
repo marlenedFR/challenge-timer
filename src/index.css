@@ -331,7 +331,7 @@ input[type="number"] {
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .mobile-warning {
     display: flex;
   }
@@ -340,4 +340,3 @@ input[type="number"] {
     display: none;
   }
 }
-
