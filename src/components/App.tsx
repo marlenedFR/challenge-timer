@@ -1,45 +1,24 @@
-import React, { useEffect, useState } from "react";
-import TimerInput from "./TimerInput";
+import React, { useState } from "react";
 import Timer from "./Timer";
-import Footer from "./Footer";
 import { TimerType } from "../types";
 import "../index.css";
 
 const App: React.FC = () => {
-  const [timers, setTimers] = useState<TimerType[]>([]);
+  const [showTimer, setShowTimer] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log("Current timers:", timers);
-  }, [timers]);
-
-  const addTimer = (time: TimerType) => {
-    console.log("Adding timer:", time);
-    setTimers((prevTimers) => {
-      const newTimers = [...prevTimers, time];
-      console.log("Updated timers:", newTimers);
-      return newTimers;
-    });
-  };
-
-  const removeTimer = (index: number) => {
-    console.log("Removing timer at index:", index);
-    setTimers((prevTimers) => prevTimers.filter((_, i) => i !== index));
-  };
+  const testTime: TimerType = { hours: 0, minutes: 5, seconds: 0 };
 
   return (
     <div className="app">
       <h1>Timer</h1>
-      <TimerInput onAddTimer={addTimer} />
+      <button className="add-timer-button" onClick={() => setShowTimer(true)}>
+        Add Timer
+      </button>
       <div className="timer-list">
-        {timers.map((time, index) => (
-          <Timer
-            key={index}
-            initialTime={time}
-            onRemove={() => removeTimer(index)}
-          />
-        ))}
+        {showTimer && (
+          <Timer initialTime={testTime} onRemove={() => setShowTimer(false)} />
+        )}
       </div>
-      <Footer />
     </div>
   );
 };
