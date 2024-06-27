@@ -1,38 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { TimerType } from "../types";
 
-const useTimer = (initialTime) => {
-  const [timerState, setTimerState] = useState({
+interface TimerState {
+  time: TimerType;
+  isPaused: boolean;
+  isActive: boolean;
+}
+
+const useTimer = (initialTime: TimerType) => {
+  const [timerState, setTimerState] = useState<TimerState>({
     time: initialTime,
-    isActive: true,
     isPaused: false,
+    isActive: true,
   });
-
-  const [hasEnded, setHasEnded] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    let timerId;
     if (timerState.isActive && !timerState.isPaused) {
-      timerId = setInterval(() => {
+      timerRef.current = setInterval(() => {
         setTimerState((prevState) => {
           const totalSeconds =
             prevState.time.hours * 3600 +
             prevState.time.minutes * 60 +
             prevState.time.seconds -
             1;
+
           if (totalSeconds <= 0) {
-            clearInterval(timerId);
-            if (!hasEnded) {
-              setHasEnded(true);
-            }
+            if (timerRef.current) clearInterval(timerRef.current);
             return {
               ...prevState,
               time: { hours: 0, minutes: 0, seconds: 0 },
               isActive: false,
             };
           }
+
           const hours = Math.floor(totalSeconds / 3600);
           const minutes = Math.floor((totalSeconds % 3600) / 60);
           const seconds = totalSeconds % 60;
+
           return {
             ...prevState,
             time: { hours, minutes, seconds },
@@ -41,27 +46,29 @@ const useTimer = (initialTime) => {
       }, 1000);
     }
 
-    return () => clearInterval(timerId);
-  }, [timerState.isActive, timerState.isPaused, hasEnded]);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [initialTime, timerState.isActive, timerState.isPaused]);
 
-  const handlePauseResume = () => {
+  const handlePauseResume = useCallback(() => {
     setTimerState((prevState) => ({
       ...prevState,
       isPaused: !prevState.isPaused,
     }));
-  };
+  }, []);
 
-  const handleStop = (onRemove) => {
+  const handleStop = useCallback((onRemove: () => void) => {
     setTimerState((prevState) => ({
       ...prevState,
       isActive: false,
     }));
+    if (timerRef.current) clearInterval(timerRef.current);
     onRemove();
-  };
+  }, []);
 
   return {
     timerState,
-    hasEnded,
     handlePauseResume,
     handleStop,
   };
