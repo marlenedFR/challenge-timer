@@ -58,6 +58,11 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
   };
 
   const handleAddTimer = () => {
+    const { hours, minutes, seconds } = time;
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+      alert("Please set a time greater than zero.");
+      return;
+    }
     onAddTimer(time);
   };
 
