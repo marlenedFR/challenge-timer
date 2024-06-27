@@ -6,6 +6,7 @@ import Time from "../assets/Time.png";
 import Play from "../assets/Play.png";
 import Pause from "../assets/Pause.png";
 import Close from "../assets/Close.png";
+import "../index.css";
 
 const Timer = ({ initialTime, onRemove }) => {
   const [timerState, setTimerState] = useState({

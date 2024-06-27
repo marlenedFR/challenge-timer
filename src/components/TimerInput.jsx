@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 
 import { useState } from "react";
+import "../index.css";
 
 const TimerInput = ({ onAddTimer }) => {
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
