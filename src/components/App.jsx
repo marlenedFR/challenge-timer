@@ -3,6 +3,7 @@ import TimerInput from "./TimerInput";
 import Timer from "./Timer";
 import Footer from "./Footer";
 import "../index.css";
+import DebugLog from "./DebugLog";
 
 const App = () => {
   const [timers, setTimers] = useState([]);
@@ -32,6 +33,7 @@ const App = () => {
           initialTime={{ hours: 0, minutes: 1, seconds: 0 }}
           onRemove={() => {}}
         />
+        <DebugLog />
       </div>
       <Footer />
     </div>
