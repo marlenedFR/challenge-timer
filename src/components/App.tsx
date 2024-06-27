@@ -7,23 +7,11 @@ import "../index.css";
 
 const App: React.FC = () => {
   const [timers, setTimers] = useState<TimerType[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
 
   const addTimer = (time: Omit<TimerType, "id">) => {
@@ -34,14 +22,6 @@ const App: React.FC = () => {
   const removeTimer = (id: number) => {
     setTimers((prevTimers) => prevTimers.filter((timer) => timer.id !== id));
   };
-
-  if (isMobile) {
-    return (
-      <div className="mobile-warning">
-        Cette application est disponible uniquement sur ordinateur portable.
-      </div>
-    );
-  }
 
   return (
     <div className="app">
