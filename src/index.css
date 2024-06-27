@@ -34,10 +34,10 @@ body {
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
-  /* position: relative; */
+  position: relative;
 }
 
-/* body::before {
+body::before {
   content: "";
   position: absolute;
   top: 0;
@@ -64,7 +64,7 @@ body {
   opacity: 0.1;
   z-index: 1;
   backdrop-filter: blur(5px);
-} */
+}
 
 .app {
   display: flex;
@@ -166,6 +166,7 @@ h1 {
   position: absolute;
   bottom: 40px;
   right: 38px;
+  text-decoration: none;
 }
 
 .add-timer-button:hover {
@@ -192,7 +193,8 @@ h1 {
   text-align: center;
   max-width: 200px;
   border: var(--border-width) solid var(--border-color);
-  z-index: 4;
+  z-index: 1;
+  border: #ff87c1 2px solid;
 }
 
 .timer-circle {
