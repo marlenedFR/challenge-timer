@@ -16,10 +16,20 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     e: React.ChangeEvent<HTMLInputElement>,
     key: keyof Omit<TimerType, "id">
   ) => {
-    setTime({
-      ...time,
-      [key]: parseInt(e.target.value) || 0,
-    });
+    const value = e.target.value;
+    const numericValue = parseInt(value);
+
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      setTime({
+        ...time,
+        [key]: numericValue,
+      });
+    } else {
+      setTime({
+        ...time,
+        [key]: 0,
+      });
+    }
   };
 
   const handleFocus = (
