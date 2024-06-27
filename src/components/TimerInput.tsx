@@ -19,7 +19,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     const value = parseInt(e.target.value);
     setTime({
       ...time,
-      [key]: value >= 0 ? value : 0, // Assurez-vous que la valeur soit positive
+      [key]: value >= 0 ? value : 0,
     });
   };
 
@@ -30,9 +30,9 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     if (time[key] === 0) {
       setTime({
         ...time,
-        [key]: NaN, // Utilisez NaN pour indiquer que le champ est vide
+        [key]: NaN,
       });
-      e.target.value = ""; // Effacez le champ d'entrée
+      e.target.value = "";
     }
   };
 
@@ -43,7 +43,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
     if (isNaN(time[key])) {
       setTime({
         ...time,
-        [key]: 0, // Remettez 0 si le champ est vide
+        [key]: 0,
       });
     }
   };
@@ -62,9 +62,9 @@ const TimerInput: React.FC<TimerInputProps> = ({ onAddTimer }) => {
         onChange={(e) => handleChange(e, key)}
         onFocus={(e) => handleFocus(e, key)}
         onBlur={(e) => handleBlur(e, key)}
-        min="0" // Empêche les valeurs négatives
-        step="1" // Optionnel : définit l'incrément de la valeur
-        onKeyDown={(e) => e.key === "-" && e.preventDefault()} // Empêche la saisie du signe négatif
+        min="0"
+        step="1"
+        onKeyDown={(e) => e.key === "-" && e.preventDefault()}
       />
     </div>
   );
