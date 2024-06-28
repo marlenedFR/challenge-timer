@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TimerDisplay from "./TimerDisplay";
 import useTimer from "../hooks/useTimer";
 import useNotification from "../hooks/useNotification";
@@ -15,6 +15,7 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   const { timerState, handlePauseResume, handleStop } = useTimer(initialTime);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const playSound = useSound();
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const totalSeconds =
     initialTime.hours * 3600 + initialTime.minutes * 60 + initialTime.seconds;
@@ -47,10 +48,11 @@ const Timer: React.FC<TimerProps> = ({ initialTime, onRemove }) => {
   useNotification(remainingSeconds === 0 ? "Timer terminé ! 😎" : "");
 
   useEffect(() => {
-    if (!isMobile && remainingSeconds === 0) {
+    if (!isMobile && remainingSeconds === 0 && !isCompleted) {
+      setIsCompleted(true);
       playSound();
     }
-  }, [remainingSeconds, playSound, isMobile]);
+  }, [remainingSeconds, playSound, isMobile, isCompleted]);
 
   return (
     <div className="timer-display">
