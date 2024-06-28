@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import clockSound from "../assets/Clock.mp3"; // Vérifiez bien que le chemin est correct
+import clockSound from "../assets/Clock.mp3";
 
 const useSound = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
